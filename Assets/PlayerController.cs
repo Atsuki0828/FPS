@@ -6,7 +6,6 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerController : MonoBehaviour
 {
-    //private FirstPersonController FPS;
     public Camera playerCamera;
     int PlayerHP = 100;
     //public int GunsAmo = 30;
