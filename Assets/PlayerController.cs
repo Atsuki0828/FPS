@@ -16,80 +16,16 @@ public class PlayerController : MonoBehaviour
     public static int changegun = 0;
     int gunsamonokori = 0;
 
-    bool gunBool = false;
-    //RaycastHit Hit;
+    //-------------- 考えてね① ---------------------
+    int timeCount;
+    //-------------- 考えてね① ---------------------
+
     // Start is called before the first frame update
     void Start()
     {
-
         Cursor.lockState = CursorLockMode.Locked;
-
-
     }
 
-    private IEnumerator Fullauto()
-    {
-        if (gunBool)
-        {
-            for (int i = 0; i < 1000; i++)
-            {
-                int distance = 500;
-                Vector3 center;
-                if (Gunschange == 0)
-                {
-                    center = new Vector3(Screen.width / 2 + Random.Range(-15, 15), Screen.height / 2 + Random.Range(-15, 15), 0);
-                }
-                else
-                {
-                    center = new Vector3(Screen.width / 2 + Random.Range(-40, 40), Screen.height / 2 + Random.Range(-40, 40), 0);
-                }
-                Ray ray = playerCamera.ScreenPointToRay(center);
-                Debug.DrawLine(transform.position, center, Color.red);
-                RaycastHit hitInfo;
-
-                if (ScoreScript.Amocount > 0)
-                {
-                    
-                    ScoreScript.Amocount -= 1;
-                    if (Physics.Raycast(ray, out hitInfo, distance))
-                    {
-
-                        Instantiate(Exploson7, hitInfo.point, Quaternion.identity);
-
-                        if (hitInfo.collider.tag == "Enemy")
-                        {
-                            if (Gunschange == 0)
-                            {
-                                hitInfo.collider.SendMessage("Damage");
-                            }
-                            else
-                            {
-                                hitInfo.collider.SendMessage("Damage1");
-                            }
-
-                        }
-                        if (hitInfo.collider.tag == "HeadShot")
-                        {
-                            if (Gunschange == 0)
-                            {
-                                hitInfo.collider.transform.root.gameObject.SendMessage("HeadDamage");
-                            }
-                            else
-                            {
-                                hitInfo.collider.transform.root.gameObject.SendMessage("HeadDamage1");
-                            }
-                        }
-                    }
-
-                    else
-                    {
-                        Amotext = true;
-                    }
-                }
-                yield return new WaitForSeconds(0.5f);
-            }
-        }
-    }
     // Update is called once per frame
     void Update()
     {
@@ -107,6 +43,8 @@ public class PlayerController : MonoBehaviour
                 changegun = 0;
             }
         }
+
+        //セミオートで打つ場合
         if (Gunschange == 0)
         {
             if (Input.GetMouseButtonDown(0))
@@ -115,30 +53,32 @@ public class PlayerController : MonoBehaviour
                 //撃つ作業
             }
         }
+
+        //フルオートで打つ場合
         if (Gunschange == 1)
         {
-            if (Input.GetMouseButtonDown(0))
+            //-------------- 考えてね② ---------------------
+            timeCount += 1;
+            if (Input.GetMouseButton(0))
             {
-                //StartCoroutine("Fullauto");
-                gunBool = true;
-                StartCoroutine("Fullauto");
-                //撃つ作業
+                if(timeCount % 5 == 0)
+                {
+                    SendMessage("AutoShot");
+                }
             }
-            //撃つ作業
-        
+            //-------------- 考えてね② ---------------------
         }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             SendMessage("Reload");
             //リロード作業
         }
+
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2, 0);
         Debug.DrawLine(transform.position, center, Color.red);
-        if (Input.GetMouseButtonUp(0))
-        {
-            gunBool = false;
-        }
     }
+
     public void PlayerDamage()
     {
         PlayerHP -= 10;
@@ -150,54 +90,62 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
     void Shot()
     //撃つ作業説明文
     {
         int distance = 500;
         Vector3 center;
-        if (Gunschange == 0)
-        {
-            center = new Vector3(Screen.width / 2 + Random.Range(-15, 15), Screen.height / 2 + Random.Range(-15, 15), 0);
-        }
-        else
-        {
-            center = new Vector3(Screen.width / 2 + Random.Range(-40, 40), Screen.height / 2 + Random.Range(-40, 40), 0);
-        }
+        center = new Vector3(Screen.width / 2 + Random.Range(-15, 15), Screen.height / 2 + Random.Range(-15, 15), 0);
         Ray ray = playerCamera.ScreenPointToRay(center);
         Debug.DrawLine(transform.position, center, Color.red);
         RaycastHit hitInfo;
 
         if (ScoreScript.Amocount > 0)
         {
-            
             ScoreScript.Amocount -= 1;
             if (Physics.Raycast(ray, out hitInfo, distance))
             {
-
                 Instantiate(Exploson7, hitInfo.point, Quaternion.identity);
-
                 if (hitInfo.collider.tag == "Enemy")
                 {
-                    if (Gunschange == 0)
-                    {
-                        hitInfo.collider.SendMessage("Damage");
-                    }
-                    else
-                    {
-                        hitInfo.collider.SendMessage("Damage1");
-                    }
-
+                    hitInfo.collider.SendMessage("Damage");
                 }
                 if (hitInfo.collider.tag == "HeadShot")
                 {
-                    if (Gunschange == 0)
-                    {
-                        hitInfo.collider.transform.root.gameObject.SendMessage("HeadDamage");
-                    }
-                    else
-                    {
+                    hitInfo.collider.transform.root.gameObject.SendMessage("HeadDamage");
+                }
+            }
+            else
+            {
+                Amotext = true;
+            }
+        }
+    }
+
+    //フルオートの場合に使用するメソッド
+    void AutoShot()
+    //撃つ作業説明文
+    {
+        int distance = 500;
+        Vector3 center;
+        center = new Vector3(Screen.width / 2 + Random.Range(-40, 40), Screen.height / 2 + Random.Range(-40, 40), 0);
+        Ray ray = playerCamera.ScreenPointToRay(center);
+        Debug.DrawLine(transform.position, center, Color.red);
+        RaycastHit hitInfo;
+        if (ScoreScript.Amocount > 0)
+        {
+            ScoreScript.Amocount -= 1;
+            if (Physics.Raycast(ray, out hitInfo, distance))
+            {
+                Instantiate(Exploson7, hitInfo.point, Quaternion.identity);
+                if (hitInfo.collider.tag == "Enemy")
+                {
+                    hitInfo.collider.SendMessage("Damage1");
+                }
+                if (hitInfo.collider.tag == "HeadShot")
+                {
                         hitInfo.collider.transform.root.gameObject.SendMessage("HeadDamage1");
-                    }
                 }
             }
 
@@ -207,6 +155,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     void Reload()
     {
         //指定したスクリプトを無効化
@@ -223,17 +172,13 @@ public class PlayerController : MonoBehaviour
             ScoreScript.Allamocount -= 30 - ScoreScript.Amocount;
         } else
         {
-
             ScoreScript.Amocount = ScoreScript.Amocount + ScoreScript.Allamocount;
             ScoreScript.Amocount = ScoreScript.Allamocount;
             ScoreScript.Allamocount = 0;
         }
-        
+
 
     }
-            // void Restart()
-            //  {
-            //     FPS.enabled = true;
-            //  }
-        
+
+
 }
