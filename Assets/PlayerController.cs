@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
 {
     public Camera playerCamera;
     int PlayerHP = 100;
-    //public int GunsAmo = 30;
     public static bool Amotext = false;
     public GameObject Exploson7;
     int Gunschange = 0;
@@ -166,7 +165,6 @@ public class PlayerController : MonoBehaviour
         if (ScoreScript.Allamocount >= 30)
         {
             gunsamonokori = ScoreScript.Amocount;
-            //GunsAmo = 30;
             ScoreScript.Amocount = 30;
             ScoreScript.Allamocount -= 30 - ScoreScript.Amocount;
         } else
