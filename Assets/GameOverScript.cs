@@ -19,7 +19,7 @@ public class GameOverScript : MonoBehaviour
             SceneManager.LoadScene("Main");
             ScoreScript.enemycount = 0;
             ScoreScript.HPcount = 100;
-            ScoreScript.Amocount = 30;
+            ScoreScript.Amocount = 0;
                 
         }
     }

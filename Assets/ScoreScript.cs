@@ -13,8 +13,8 @@ public class ScoreScript : MonoBehaviour
     public Text ChangeGunlabel;
     public static int enemycount = 0;
     public static int HPcount = 100;
-    public static int Amocount = 30;
-    public static int Allamocount = 50;
+    public static int Amocount = 0;
+    public static int Allamocount = 60;
     
         // Start is called before the first frame update
         void Start()

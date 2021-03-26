@@ -11,15 +11,19 @@ public class PlayerController : MonoBehaviour
     public GameObject Exploson7;
     int Gunschange = 0;
     public static int changegun = 0;
-    int gunsamonokori = 0;
     int timeCount;
     bool gunBool = false;
     public AudioClip sound1;
     AudioSource audioSource;
+    int[] magazines = new int[] { 0, 30, 30 };
+    int current_magazine = 0;
+    
+
     void Start()
     {
 
         Cursor.lockState = CursorLockMode.Locked;
+        Debug.Log(magazines[current_magazine]);
 
 
     }
@@ -69,6 +73,15 @@ public class PlayerController : MonoBehaviour
         }
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2, 0);
         Debug.DrawLine(transform.position, center, Color.red);
+        if (ScoreScript.Allamocount > 0)
+        {
+            if (magazines[current_magazine] == 0)
+            {
+                current_magazine += 1;
+            }
+        }
+        ScoreScript.Allamocount = magazines[0] + magazines[1] + magazines[2];
+        
     }
     public void PlayerDamage()
     {
@@ -173,22 +186,33 @@ public class PlayerController : MonoBehaviour
     }
     void Reload()
     {
-        
-        if (ScoreScript.Allamocount >= 30)
-        {
-            gunsamonokori = ScoreScript.Amocount;
-            //GunsAmo = 30;
-            ScoreScript.Amocount = 30;
-            ScoreScript.Allamocount -= 30 - ScoreScript.Amocount;
-        } else
-        {
 
-            ScoreScript.Amocount = ScoreScript.Amocount + ScoreScript.Allamocount;
-            ScoreScript.Amocount = ScoreScript.Allamocount;
-            ScoreScript.Allamocount = 0;
+        //if (ScoreScript.Allamocount + ScoreScript.Amocount >= 30)
+        //{
+        //    ScoreScript.Allamocount -= 30 - ScoreScript.Amocount;
+        //    ScoreScript.Amocount = 30;
+
+        //} else
+        //{
+
+        //    ScoreScript.Amocount = ScoreScript.Amocount + ScoreScript.Allamocount;
+
+        //    ScoreScript.Allamocount = 0;
+        //}
+        magazines[current_magazine] = ScoreScript.Amocount;
+
+        if (current_magazine == 2)
+        {
+            current_magazine = 0;
         }
-        
+        else
+        {
+            current_magazine += 1;
+        }
+        ScoreScript.Amocount = magazines[current_magazine];
 
+        ScoreScript.Allamocount = magazines[0] + magazines[1] + magazines[2];
+        
     }
             
         
