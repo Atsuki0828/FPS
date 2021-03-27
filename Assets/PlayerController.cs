@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     int Gunschange = 0;
     public static int changegun = 0;
     int timeCount;
-    bool gunBool = false;
+    //bool gunBool = false;
     public AudioClip sound1;
     AudioSource audioSource;
     int[] magazines = new int[] { 0, 30, 30 };
@@ -73,15 +73,10 @@ public class PlayerController : MonoBehaviour
         }
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2, 0);
         Debug.DrawLine(transform.position, center, Color.red);
-        if (ScoreScript.Allamocount > 0)
-        {
-            if (magazines[current_magazine] == 0)
-            {
-                current_magazine += 1;
-            }
-        }
-        ScoreScript.Allamocount = magazines[0] + magazines[1] + magazines[2];
         
+        ScoreScript.Allamocount = magazines[0] + magazines[1] + magazines[2];
+        magazines[current_magazine] = ScoreScript.Amocount;
+
     }
     public void PlayerDamage()
     {
@@ -199,19 +194,33 @@ public class PlayerController : MonoBehaviour
 
         //    ScoreScript.Allamocount = 0;
         //}
-        magazines[current_magazine] = ScoreScript.Amocount;
+        
 
-        if (current_magazine == 2)
+        
+        if (ScoreScript.Allamocount > 0)
         {
-            current_magazine = 0;
-        }
-        else
-        {
-            current_magazine += 1;
+            if (current_magazine == 2)
+            {
+                current_magazine = 0;
+            }
+            else
+            {
+                current_magazine += 1;
+            }
+            if (magazines[current_magazine] == 0)
+            { 
+                current_magazine += 1;
+            }
+            if (magazines[current_magazine] == 0)
+            {
+                current_magazine += 1;
+            }
+        
+
         }
         ScoreScript.Amocount = magazines[current_magazine];
 
-        ScoreScript.Allamocount = magazines[0] + magazines[1] + magazines[2];
+        
         
     }
             
