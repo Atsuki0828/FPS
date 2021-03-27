@@ -20,17 +20,18 @@ public class KamaeScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!kamaehantei)
+        
+        if (!kamaehantei)
         {
-            Debug.Log("kkk");
+            
             if (Input.GetKeyDown(KeyCode.K))
             {
+                
                 SendMessage("Kamae");
                 kamaehantei = true;
             }
         }
-        
-        if(kamaehantei)
+        if (kamaehantei)
         {
             if (Input.GetKeyDown(KeyCode.K))
             {
@@ -38,17 +39,20 @@ public class KamaeScript : MonoBehaviour
                 kamaehantei = false;
             }
         }
-        
+
+
+
     }
     void Kamae()
     {
+        
         //for (int i=0; i < 14; i++) {
         //    parts[i].SetActive(false);
         //}
         Camera.main.fieldOfView = d_fieldOfView;
-        
-        
-        
+        Debug.Log("kkk");
+
+
     }
     void KamaeCancel()
     {
