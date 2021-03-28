@@ -77,6 +77,14 @@ public class PlayerController : MonoBehaviour
         ScoreScript.Allamocount = magazines[0] + magazines[1] + magazines[2];
         magazines[current_magazine] = ScoreScript.Amocount;
 
+        if (ScoreScript.Amocount == 0)
+        {
+            Amotext = true;
+        }
+        else
+        {
+            Amotext = false;
+        }
     }
     public void PlayerDamage()
     {
@@ -139,11 +147,6 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-
-            else
-            {
-                Amotext = true;
-            }
         }
     }
     void AutoShot()
@@ -171,11 +174,6 @@ public class PlayerController : MonoBehaviour
                 {
                     hitInfo.collider.transform.root.gameObject.SendMessage("HeadDamage1");
                 }
-            }
-
-            else
-            {
-                Amotext = true;
             }
         }
     }
