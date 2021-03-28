@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     //bool gunBool = false;
     public AudioClip sound1;
     AudioSource audioSource;
-    int[] magazines = new int[] { 0, 30, 30 };
+    int[] magazines = new int[] { 30, 30, 30 };
     int current_magazine = 0;
     
 
@@ -85,11 +85,23 @@ public class PlayerController : MonoBehaviour
         {
             Amotext = false;
         }
+        
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "supply")
+        {
+            current_magazine = 0;
+            ScoreScript.Amocount = 30;
+            magazines[1] = 30;
+            magazines[2] = 30;
+            Amotext = false;
+
+        }
     }
     public void PlayerDamage()
     {
         PlayerHP -= 10;
-        Debug.Log(PlayerHP);
         ScoreScript.HPcount -= 10;
         if (PlayerHP <= 0)
         {
